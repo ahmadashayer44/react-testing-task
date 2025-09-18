@@ -17,6 +17,8 @@ export interface User {
 }
 export type GenericErrors = Record<string, string[]>;
 
-export async function signUp(user: UserForRegistration): Promise<User | GenericErrors> {
+export async function signUp(
+  user: UserForRegistration
+): Promise<User | GenericErrors> {
   return axios.post("users", { user });
 }
