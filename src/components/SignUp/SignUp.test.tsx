@@ -5,7 +5,6 @@ import {
   screen,
   waitFor,
   waitForElementToBeRemoved,
-  act,
 } from "@testing-library/react";
 import { setupServer } from "msw/node";
 import SignUp from "./";
@@ -24,10 +23,8 @@ describe("SignUp Component", () => {
     it("should display validation errors for invalid email", async () => {
       render(<SignUp />);
       const emailInput = screen.getByLabelText(/Email Address/i);
-      act(() => {
-        fireEvent.change(emailInput, { target: { value: "invalid-email" } });
-        fireEvent.blur(emailInput);
-      });
+      fireEvent.change(emailInput, { target: { value: "invalid-email" } });
+      fireEvent.blur(emailInput);
 
       const errorMessage = await screen.findByText(/Enter a valid email/i);
       expect(errorMessage).toBeInTheDocument();
@@ -36,10 +33,8 @@ describe("SignUp Component", () => {
     it("should display validation errors for short password", async () => {
       render(<SignUp />);
       const passwordInput = screen.getByLabelText(/Password/i);
-      act(() => {
-        fireEvent.change(passwordInput, { target: { value: "short" } });
-        fireEvent.blur(passwordInput);
-      });
+      fireEvent.change(passwordInput, { target: { value: "short" } });
+      fireEvent.blur(passwordInput);
       const errorMessage = await screen.findByText(
         /Password should be of minimum 8 characters length/i
       );
@@ -54,12 +49,10 @@ describe("SignUp Component", () => {
       const signUpButton = screen.getByRole("button", {
         name: /Sign Up/i,
       });
-      act(() => {
-        fireEvent.change(emailInput, { target: { value: "test@gmail.com" } });
-        fireEvent.change(passwordInput, { target: { value: "ValidPass123!" } });
-        fireEvent.change(usernameInput, { target: { value: "ValidUserName" } });
-        fireEvent.click(signUpButton);
-      });
+      fireEvent.change(emailInput, { target: { value: "test@gmail.com" } });
+      fireEvent.change(passwordInput, { target: { value: "ValidPass123!" } });
+      fireEvent.change(usernameInput, { target: { value: "ValidUserName" } });
+      fireEvent.click(signUpButton);
       const successMessage = await screen.findByText(/Sign Up Successfully!/i);
       expect(successMessage).toBeInTheDocument();
     });
@@ -70,12 +63,10 @@ describe("SignUp Component", () => {
       const passwordInput = screen.getByLabelText(/Password/i);
       const usernameInput = screen.getByLabelText(/User Name/i);
       const signUpButton = screen.getByRole("button", { name: /Sign Up/i });
-      act(() => {
-        fireEvent.change(emailInput, { target: { value: "wrong@gmail.com" } });
-        fireEvent.change(passwordInput, { target: { value: "Password!" } });
-        fireEvent.change(usernameInput, { target: { value: "Username" } });
-        fireEvent.click(signUpButton);
-      });
+      fireEvent.change(emailInput, { target: { value: "wrong@gmail.com" } });
+      fireEvent.change(passwordInput, { target: { value: "Password!" } });
+      fireEvent.change(usernameInput, { target: { value: "Username" } });
+      fireEvent.click(signUpButton);
       const errorMessage = await screen.findByText(/Error Signing Up!/i);
       expect(errorMessage).toBeInTheDocument();
     });
@@ -88,11 +79,9 @@ describe("SignUp Component", () => {
       const passwordInput = screen.getByLabelText(/Password/i);
       const usernameInput = screen.getByLabelText(/User Name/i);
       const signUpButton = screen.getByRole("button", { name: /Sign Up/i });
-      act(() => {
-        fireEvent.change(emailInput, { target: { value: "TesT@gmail.com" } });
-        fireEvent.change(passwordInput, { target: { value: "LongPassword!" } });
-        fireEvent.change(usernameInput, { target: { value: "UserName" } });
-      });
+      fireEvent.change(emailInput, { target: { value: "TesT@gmail.com" } });
+      fireEvent.change(passwordInput, { target: { value: "LongPassword!" } });
+      fireEvent.change(usernameInput, { target: { value: "UserName" } });
       await waitFor(() => expect(signUpButton).toBeEnabled());
     });
 
@@ -102,11 +91,9 @@ describe("SignUp Component", () => {
       const passwordInput = screen.getByLabelText(/Password/i);
       const usernameInput = screen.getByLabelText(/User Name/i);
       const signUpButton = screen.getByRole("button", { name: /Sign Up/i });
-      act(() => {
-        fireEvent.change(emailInput, { target: { value: "invalid-email" } });
-        fireEvent.change(passwordInput, { target: { value: "short" } });
-        fireEvent.change(usernameInput, { target: { value: "" } });
-      });
+      fireEvent.change(emailInput, { target: { value: "invalid-email" } });
+      fireEvent.change(passwordInput, { target: { value: "short" } });
+      fireEvent.change(usernameInput, { target: { value: "" } });
 
       await waitFor(() => expect(signUpButton).toBeDisabled());
     });
@@ -116,11 +103,9 @@ describe("SignUp Component", () => {
       const emailInput = screen.getByLabelText(/Email Address/i);
       const passwordInput = screen.getByLabelText(/Password/i);
       const usernameInput = screen.getByLabelText(/User Name/i);
-      act(() => {
-        fireEvent.change(emailInput, { target: { value: "TesT@example.com" } });
-        fireEvent.change(passwordInput, { target: { value: "ValidPass123!" } });
-        fireEvent.change(usernameInput, { target: { value: "ValidUserName" } });
-      });
+      fireEvent.change(emailInput, { target: { value: "TesT@example.com" } });
+      fireEvent.change(passwordInput, { target: { value: "ValidPass123!" } });
+      fireEvent.change(usernameInput, { target: { value: "ValidUserName" } });
 
       expect(emailInput).toHaveValue("TesT@example.com");
       expect(passwordInput).toHaveValue("ValidPass123!");
@@ -133,15 +118,32 @@ describe("SignUp Component", () => {
       const passwordInput = screen.getByLabelText(/Password/i);
       const usernameInput = screen.getByLabelText(/User Name/i);
       const signUpButton = screen.getByRole("button", { name: /Sign Up/i });
-      act(() => {
-        fireEvent.change(emailInput, { target: { value: "test@gmail.com" } });
-        fireEvent.change(passwordInput, { target: { value: "ValidPass123!" } });
-        fireEvent.change(usernameInput, { target: { value: "ValidUserName" } });
-      });
+      fireEvent.change(emailInput, { target: { value: "test@gmail.com" } });
+      fireEvent.change(passwordInput, { target: { value: "ValidPass123!" } });
+      fireEvent.change(usernameInput, { target: { value: "ValidUserName" } });
       fireEvent.click(signUpButton);
       await waitForElementToBeRemoved(() =>
         screen.getByRole("button", { name: /Sign Up/i })
       );
+    });
+  });
+
+  describe("Edge Cases", () => {
+    it("should change the URL when clicking to already have an account", async () => {
+      render(<SignUp />);
+      const alreadyAccountButton = screen.getByRole("link", {
+        name: /Already have an account\? Sign In/i,
+      });
+      expect(alreadyAccountButton).toHaveAttribute("href", "#");
+    });
+    it("Should change the value of chackbox when clicked", async () => {
+      render(<SignUp />);
+      const checkbox = screen.getByRole("checkbox", {
+        name: "I want to receive inspiration, marketing promotions and updates via email.",
+      });
+      expect(checkbox).not.toBeChecked();
+      fireEvent.click(checkbox);
+      expect(checkbox).toBeChecked();
     });
   });
 });
